@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birim Dönüştürücü</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 320px; }
+        h2 { text-align: center; color: #333; margin-top: 0; font-size: 20px; }
+        .group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px; color: #555; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; outline: none; }
+        input:focus, select:focus { border-color: #4f46e5; }
+        #result { margin-top: 15px; padding: 12px; background: #e0e7ff; color: #3730a3; border-radius: 6px; font-weight: bold; text-align: center; display: none; font-size: 16px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Birim Dönüştürücü</h2>
+    
+    <div class="group">
+        <label for="val">Değer</label>
+        <input type="number" id="val" placeholder="Sayı girin...">
+    </div>
+
+    <div class="group">
+        <label for="type">Dönüşüm</label>
+        <select id="type">
+            <option value="cToF">Celsius ➔ Fahrenheit</option>
+            <option value="fToC">Fahrenheit ➔ Celsius</option>
+            <option value="kmToMile">Kilometre ➔ Mil</option>
+            <option value="mileToKm">Mil ➔ Kilometre</option>
+            <option value="kgToLb">Kilogram ➔ Pound</option>
+        </select>
+    </div>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    const valInput = document.getElementById('val');
+    const typeSelect = document.getElementById('type');
+    const resultDiv = document.getElementById('result');
+
+    valInput.addEventListener('input', calculate);
+    typeSelect.addEventListener('change', calculate);
+
+    function calculate() {
+        const val = parseFloat(valInput.value);
+        const type = typeSelect.value;
+
+        if (isNaN(valInput.value) || valInput.value === '') {
+            resultDiv.style.display = 'none';
+            return;
+        }
+
+        let res = 0, unit = '';
+
+        switch (type) {
+            case 'cToF': res = (val * 9/5) + 32; unit = '°F'; break;
+            case 'fToC': res = (val - 32) * 5/9; unit = '°C'; break;
+            case 'kmToMile': res = val * 0.621371; unit = 'Mil'; break;
+            case 'mileToKm': res = val / 0.621371; unit = 'Km'; break;
+            case 'kgToLb': res = val * 2.20462; unit = 'Lb'; break;
+        }
+
+        resultDiv.style.display = 'block';
+        resultDiv.textContent = `Sonuç: ${res.toFixed(2)} ${unit}`;
+    }
+</script>
+
+</body>
+</html>
